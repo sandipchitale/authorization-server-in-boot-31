@@ -2,27 +2,29 @@ package com.example.authclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
-import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
-import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @SpringBootApplication
 public class AuthclientApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AuthclientApplication.class, args);
+    @RestController
+    public static class GreetController {
+
+        @GetMapping("/")
+        public Map<String, String> greet() {
+            return Map.of("message", "Hello World");
+//            var jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            return Map.of("message", "Hello " + jwt.getSubject());
+        }
     }
 
-    @Bean
-    RouteLocator gateway(RouteLocatorBuilder rlb) {
-        return rlb
-                .routes()
-                .route(rs -> rs
-                        .path("/")
-                        .filters(GatewayFilterSpec::tokenRelay)
-                        .uri("http://localhost:8081"))
-                .build();
+    public static void main(String[] args) {
+        SpringApplication.run(AuthclientApplication.class, args);
     }
 }
 

@@ -14,9 +14,10 @@ public class AuthserverApplication {
     }
 
     @Bean
+    @SuppressWarnings("deprecation")
     InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-        var one = User.withDefaultPasswordEncoder().roles("admin").username("sjohnr").password("pw").build();
-        var two = User.withDefaultPasswordEncoder().roles("user").username("jlong").password("pw").build() ;
+        var one = User.withDefaultPasswordEncoder().roles("admin").username("admin").password("pw").build();
+        var two = User.withDefaultPasswordEncoder().roles("user").username("user").password("pw").build() ;
         return new InMemoryUserDetailsManager(one, two);
     }
 }
